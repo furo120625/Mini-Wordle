@@ -54,3 +54,15 @@ button{padding:8px 12px;border-radius:6px;border:0;background:#2563eb;color:whit
 .answer-link:hover {
   opacity: 0.8;
 }
+
+.note {
+  font-size: 13px;
+  color: #ffffff;
+  background: #000000;
+  border: 1px solid #ffffff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  text-align: center;
+  margin: 8px auto;
+  max-width: 320px;
+}
