@@ -1,38 +1,8 @@
 class GameWordle {
   constructor(boardEl, keyboardEl, msgEl) {
-    this.WORDS = [
-      "APPLE","BRAVE","CRANE","DREAM","ELATE",
-      "FRAME","GHOST","HOUSE","INPUT","JUDGE",
-      "KNIFE","LIGHT","MONEY","NURSE","OPERA",
-      "PRIDE","QUICK","ROAST","SWEET","TRAIN",
-      "UNITY","VIVID","WORLD","YOUNG","ZEBRA",
-      "GRAPE","PEARL","STONE","CHAIR","TABLE",
-      "CANDY","BEACH","CLOUD","FLAME","GREEN",
-      "WHITE","BLACK","MUSIC","DANCE","WATER",
-      "EARTH","PLANT","FIGHT","HAPPY","LAUGH",
-      "MAGIC","NIGHT","QUEEN","RIVER","SHINE",
-      "STORM","TIGER","ANGEL","CHESS","GIANT",
-      "HORSE","JOKER","LEMON","METAL","NOBLE",
-      "OCEAN","PEACE","ROBOT","SNAKE","YOUTH",
-      "ALBUM","ALIEN","ALIVE","BACON","BASIC",
-      "BEAST","BLINK","BLOCK","BREAD","BRICK",
-      "BROWN","BRUSH","CABLE","CAMEL","CATCH",
-      "CHASE","CHIEF","CLEAN","CLOCK","CRUMB",
-      "DIRTY","DONUT","EAGLE","EMPTY","EXTRA",
-      "FAULT","FIELD","FLASH","GLASS","GLOVE",
-      "GUESS","HEART","HOTEL","INDEX","JUICE",
-      "KNOCK","LEAFY","LOGIC","LUCKY","MARCH",
-      "MATCH","MOUSE","NOISE","ONION","PAINT",
-      "PANDA","PAPER","PIZZA","POUND","QUIET",
-      "RADIO","REACH","RIGHT","SALAD","SHEEP",
-      "SKILL","SLEEP","SMILE","SOUND","SPACE",
-      "SPOON","STAND","STORE","SUGAR","SWING",
-      "TASTE","THICK","TOWEL","TRACK","UNCLE",
-      "UNDER","VALUE","VOICE","WATCH","WHEEL",
-      "WHERE","WOMAN","WRONG","YIELD","ZESTY"
-    ];
-    this.inputLockedUntil = 0;
-    this.gameVersion = 0;
+    this.WORDS = ALL_WORDS;
+    this.wordSet = new Set(this.WORDS);
+
     this.ROWS = 6;
     this.COLS = 5;
     this.boardEl = boardEl;
@@ -51,7 +21,6 @@ class GameWordle {
   }
 
   init() {
-    this.gameVersion++;
     this.boardEl.innerHTML = "";
     this.keyboardEl.innerHTML = "";
     this.msgEl.textContent = "";
@@ -109,17 +78,16 @@ class GameWordle {
   }
 
   handleInput(key) {
-  if (this.gameOver || Date.now() < this.inputLockedUntil) return;
+    if (this.gameOver) return;
+    if (key === "Enter") return this.submitRow();
+    if (key === "Back") return this.backspace();
 
-  if (key === "Enter") return this.submitRow();
-  if (key === "Back") return this.backspace();
-
-  if (key.length === 1 && this.curCol < this.COLS) {
-    this.grid[this.curRow][this.curCol] = key;
-    this.updateTile(this.curRow, this.curCol, key);
-    this.curCol++;
+    if (key.length === 1 && this.curCol < this.COLS) {
+      this.grid[this.curRow][this.curCol] = key;
+      this.updateTile(this.curRow, this.curCol, key);
+      this.curCol++;
+    }
   }
-}
 
   updateTile(r, c, val) {
     const tile = this.boardEl.querySelector(`.tile[data-r="${r}"][data-c="${c}"]`);
@@ -139,7 +107,7 @@ class GameWordle {
     if (this.curCol < this.COLS) return this.showMessage("Chưa đủ 5 chữ!", 2000);
     const guess = this.grid[this.curRow].join("");
     
-    if (!this.WORDS.includes(guess)) {
+    if (!this.wordSet.has(guess)) {
       this.showMessage("Từ không hợp lệ", 1500);
       for (let i = 0; i < this.COLS; i++) {
         this.grid[this.curRow][i] = "";
@@ -148,7 +116,7 @@ class GameWordle {
       this.curCol = 0;
       return;
     }
-    this.inputLockedUntil = Date.now() + 1200;
+
     const solArr = this.solution.split("");
     const guessArr = guess.split("");
     const result = Array(this.COLS).fill("absent");
@@ -197,23 +165,16 @@ class GameWordle {
   }
 
   revealRow(r, guessArr, resultArr) {
-    const version = this.gameVersion;
     return new Promise((resolve) => {
       for (let i = 0; i < this.COLS; i++) {
         setTimeout(() => {
-          if (this.gameVersion !== version) return;
           const tile = this.boardEl.querySelector(`.tile[data-r="${r}"][data-c="${i}"]`);
           tile.classList.add("revealed", resultArr[i]);
-          if (tile) {
-          tile.classList.add("revealed", resultArr[i]);
-        }
-
-        if (i === this.COLS - 1) resolve();
-
-      }, i * 250);
-    }
-  });
-}
+          if (i === this.COLS - 1) resolve();
+        }, i * 250);
+      }
+    });
+  }
 
   showMessage(text, time = 1500, cls = "") {
     this.msgEl.textContent = text;
@@ -223,6 +184,5 @@ class GameWordle {
       this.msgEl.className = "";
     }, time);
   }
-
 }
 window.GameWordle = GameWordle;
