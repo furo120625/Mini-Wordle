@@ -185,7 +185,7 @@ class GameWordle {
         this.showMessage("Đoán đúng rồi!", 5000, "win");
       } else if (++this.curRow >= this.ROWS) {
         this.gameOver = true;
-        this.showMessage(`Thua! Đáp án: ${this.solution}`, 4000, "lose");
+        this.showMessage(`Thua! Đáp án: ${this.solution}`, 0, "lose");
       } else {
         this.curCol = 0;
       }
