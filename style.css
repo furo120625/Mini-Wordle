@@ -44,3 +44,13 @@ h1{margin:0 0 8px}
 button{padding:8px 12px;border-radius:6px;border:0;background:#2563eb;color:white;cursor:pointer}
 #msg.win{color:#8ef08e}
 #msg.lose{color:#ff9b9b}
+
+.answer-link {
+  color: #6aaa64;
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.answer-link:hover {
+  opacity: 0.8;
+}

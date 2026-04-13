@@ -182,10 +182,23 @@ class GameWordle {
 
       if (guess === this.solution) {
         this.gameOver = true;
-        this.showMessage("Đoán đúng rồi!", 5000, "win");
+        const word = this.solution;
+        const url = `https://www.google.com/search?q=${encodeURIComponent(word)}`;
+
+        this.showMessage(
+          `Đáp án đúng là (Click để tìm hiểu thêm): <a href="${url}" target="_blank" class="answer-link">${word}</a>`,
+          0,
+          "win"
+        );
       } else if (++this.curRow >= this.ROWS) {
         this.gameOver = true;
-        this.showMessage(`Thua! Đáp án: ${this.solution}`, 0, "lose");
+        const word = this.solution;
+        const url = `https://www.google.com/search?q=${encodeURIComponent(word)}`;
+        this.showMessage(
+          `Thua! Đáp án (Click để tìm hiểu thêm): <a href="${url}" target="_blank" class="answer-link">${word}</a>`,
+          0,
+          "lose"
+        );
       } else {
         this.curCol = 0;
       }
@@ -212,7 +225,7 @@ class GameWordle {
 }
 
   showMessage(text, time = 1500, cls = "") {
-    this.msgEl.textContent = text;
+    this.msgEl.innerHTML = text;
     this.msgEl.className = cls;
     if (time > 0) setTimeout(() => {
       this.msgEl.textContent = "";
