@@ -89,3 +89,17 @@ button{padding:8px 12px;border-radius:6px;border:0;background:#2563eb;color:whit
   margin: 8px auto;
   max-width: 320px;
 }
+/* Nút bật/tắt nhạc */
+.music-btn {
+  background-color: #4c6ef5;
+  margin-left: 12px;
+}
+.music-btn:hover {
+  background-color: #3b5bdb;
+}
+.controls {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+}
