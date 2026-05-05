@@ -10,8 +10,7 @@
 <body>
   <h1>Mini Wordle</h1>
   <p class="note">
-  Lưu ý: Không sử dụng danh từ thêm s/es. Ưu tiên sử dụng từ phổ thông.
-
+    Lưu ý: Không sử dụng danh từ thêm s/es. Ưu tiên sử dụng từ phổ thông.
   </p>
   <p id="msg"></p>
 
@@ -21,9 +20,46 @@
 
   <div class="controls">
     <button id="newGame">Chơi lại</button>
+
+    <button id="musicToggle" class="music-btn"> Bật nhạc </button>
   </div>
 
-<script src="Wordle.js"></script>
-<script src="mainWordle.js"></script>
+  <audio id="bgMusic" src="soundtrack.mp3" loop preload="auto"></audio>
+
+  <script src="Wordle.js"></script>
+  <script src="mainWordle.js"></script>
+
+  <script>
+    (function() {
+      const audio = document.getElementById('bgMusic');
+      const toggleBtn = document.getElementById('musicToggle');
+      let isPlaying = false;
+
+      audio.volume = 0.5;
+
+      function playMusic() {
+        audio.play().then(() => {
+          isPlaying = true;
+          toggleBtn.textContent = 'Nhạc : Bật';
+        }).catch(err => {
+          console.warn('Không thể tự động phát nhạc:', err);
+          isPlaying = false;
+          toggleBtn.textContent = 'Nhạc : Tắt';
+        });
+      }
+      function pauseMusic() {
+        audio.pause();
+        isPlaying = false;
+        toggleBtn.textContent = 'Nhạc : Tắt';
+      }
+      toggleBtn.addEventListener('click', () => {
+        if (isPlaying) {
+          pauseMusic();
+        } else {
+          playMusic();
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
