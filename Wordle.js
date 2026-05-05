@@ -190,7 +190,7 @@ class GameWordle {
         const url = `https://www.google.com/search?q=${encodeURIComponent(word + " là gì ?")}`;
 
         this.showMessage(
-          `Đáp án đúng là (Click để tìm hiểu thêm): <a href="${url}" target="_blank" class="answer-link">${word +" (là gì ?)"}</a>`,
+          `Đáp án đúng: <a href="${url}" target="_blank" class="answer-link">${word +" (Nghĩa là gì?"}</a>`,
           0,
           "win"
         );
@@ -199,7 +199,7 @@ class GameWordle {
         const word = this.solution;
         const url = `https://www.google.com/search?q=${encodeURIComponent(word + " là gì ?")}`;
         this.showMessage(
-          `Thua! Đáp án (Click để tìm hiểu thêm): <a href="${url}" target="_blank" class="answer-link">${word + " (là gì ?)"}</a>`,
+          `Thua! Đáp án: <a href="${url}" target="_blank" class="answer-link">${word + " (Nghĩa là gì?)"}</a>`,
           0,
           "lose"
         );
